@@ -1,0 +1,27 @@
+CC      := gcc
+CFLAGS  := -Wall -O3
+
+LOG_LEVEL ?= 1
+NTP_TRY_COUNT ?= 8
+CFLAGS  += -DLOG_LEVEL=$(LOG_LEVEL) -DNTP_TRY_COUNT=$(NTP_TRY_COUNT)
+
+ifdef ENABLE_SETTIMEOFDAY
+	CFLAGS += -DENABLE_SETTIMEOFDAY
+endif
+
+TARGET  := my_ntpdate
+SRCS    := main.c ntp.c
+OBJS    := $(SRCS:.c=.o)
+DEPS    := ntp.h log.h
+
+.PHONY: all clean
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
+
+%.o: %.c $(DEPS)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+clean:
+	rm -f $(TARGET) $(OBJS)
