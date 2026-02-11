@@ -21,6 +21,7 @@ typedef struct {
  * @brief NTPサーバに時刻同期を要求する
  *
  * @param ntp_server NTPサーバのIPアドレスまたはホスト名
+ * @param result NTPサーバからの応答をもとに算出したoffset、delay
  * @return int 失敗時は-1
  */
 int ntp_request(char *ntp_server, ntp_offset_delay_t *result);
